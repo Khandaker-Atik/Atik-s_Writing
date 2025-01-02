@@ -3,11 +3,15 @@ from flask_login import login_user, current_user, logout_user, login_required
 from app import app, db, bcrypt
 from models import User, Post
 from forms import LoginForm, PostForm
+from datetime import datetime
+
+# Define the last edited time
+last_edited_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 @app.route('/')
 def home():
     posts = Post.query.all()
-    return render_template('home.html', posts=posts)
+    return render_template('home.html', posts=posts, last_edited_time=last_edited_time)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -52,7 +56,6 @@ def delete_post(post_id):
     flash('The post has been deleted', 'success')
     return redirect(url_for('home'))
 
-
 @app.route("/post/<int:post_id>")
 def view_post(post_id):
     post = Post.query.get_or_404(post_id)
@@ -77,4 +80,5 @@ def view_post(post_id):
                          post=post, 
                          post_number=post_number,
                          prev_post=prev_post, 
-                         next_post=next_post)
+                         next_post=next_post,
+                         last_edited_time=last_edited_time)

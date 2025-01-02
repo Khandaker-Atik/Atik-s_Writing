@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
+
+<head>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+</head>
+
 <style>
     .post-grid {
         display: grid;
@@ -73,6 +78,20 @@
         border-radius: 15px;
         font-size: 0.8rem;
     }
+
+    .btn-delete {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .btn-delete:hover {
+        background-color: #c0392b;
+    }
 </style>
 
 <div class="post-grid">
@@ -85,13 +104,37 @@
             <div class="post-meta">
                 Posted by {{ post.author.username }} on {{ post.date_posted.strftime('%B %d, %Y') }}
             </div>
-            <a href="{{ url_for('view_post', post_id=post.id) }}" class="read-more">Read More →</a>
+            {% if current_user.is_authenticated and (current_user.is_admin or post.author == current_user) %}
+            <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST" style="display:inline;">
+                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+            <a href="{{ url_for('edit_post', post_id=post.id) }}" class="btn btn-primary btn-sm">Edit</a>
+            {% endif %}
         </div>
     </div>
     {% endfor %}
 </div>
 
 {% if current_user.is_authenticated %}
-    <a href="{{ url_for('new_post') }}" class="btn btn-success">✏️ Write New Post</a>
+    <a href="{{ url_for('new_post') }}" class="btn btn-success" style="text-decoration: none;">✏️ Write New Post</a>
 {% endif %}
+
+<!-- Footer -->
+<footer class="footer" style="background-color: #f8f9fa; padding: 20px 0; text-align: center;">
+    <div class="footer__container" style="max-width: 1200px; margin: 0 auto;">
+        <div class="footer__links" style="margin-bottom: 10px;">
+            <a href="https://www.facebook.com/4t716" target="_blank" class="footer__link" 
+               style="text-decoration: none; color: #4267B2; font-size: 1.2rem; margin: 0 10px; display: inline-flex; align-items: center;">
+                <i class="uil uil-facebook-f" style="margin-right: 8px; font-size: 1.5rem;"></i> Khandaker Atik
+            </a>
+        </div>
+        <p class="footer__copy" style="color: #6c757d; font-size: 0.9rem;">
+            &#169; 2025 Developed By Khandaker Atik. All Rights Reserved.
+        </p>
+        <p class="footer__edit-time" style="color: #6c757d; font-size: 0.8rem;">
+            Last Edited: {{ last_edited_time }}
+        </p>
+    </div>
+</footer>
+
 {% endblock %}
