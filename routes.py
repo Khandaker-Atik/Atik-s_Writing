@@ -51,3 +51,30 @@ def delete_post(post_id):
     db.session.commit()
     flash('The post has been deleted', 'success')
     return redirect(url_for('home'))
+
+
+@app.route("/post/<int:post_id>")
+def view_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    
+    # Get total number of posts and current post number
+    all_posts = Post.query.order_by(Post.date_posted.desc()).all()
+    post_number = all_posts.index(post) + 1
+    
+    # Get previous and next posts
+    prev_post = None
+    next_post = None
+    
+    for i, p in enumerate(all_posts):
+        if p.id == post_id:
+            if i > 0:
+                prev_post = all_posts[i-1]
+            if i < len(all_posts)-1:
+                next_post = all_posts[i+1]
+            break
+    
+    return render_template('view_post.html', 
+                         post=post, 
+                         post_number=post_number,
+                         prev_post=prev_post, 
+                         next_post=next_post)

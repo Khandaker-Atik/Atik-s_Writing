@@ -1,18 +1,122 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Login</h1>
-    <form method="POST" action="{{ url_for('login') }}">
+<style>
+    .login-container {
+        max-width: 400px;
+        margin: 2rem auto;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        position: relative;
+        background-image: linear-gradient(var(--line-color) 1px, transparent 1px);
+        background-size: 100% 2rem;
+    }
+
+    .login-container::before {
+        content: '';
+        position: absolute;
+        left: -5px;
+        height: 100%;
+        width: 3px;
+        background: var(--accent-color);
+        border-radius: 3px;
+        top: 0;
+    }
+
+    .login-container h1 {
+        font-family: 'Architects Daughter', cursive;
+        color: var(--primary-color);
+        text-align: center;
+        margin-bottom: 2rem;
+        font-size: 2.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid var(--line-color);
+        border-radius: 5px;
+        font-family: 'Poppins', sans-serif;
+        transition: all 0.3s ease;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 5px rgba(231, 76, 60, 0.2);
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        background: var(--accent-color);
+        color: white;
+        border: none;
+        border-radius: 25px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 1rem;
+    }
+
+    button:hover {
+        background: #c0392b;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .loader {
+        display: none;
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid var(--accent-color);
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto 0;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+
+<div class="login-container">
+    <h1>🔑 Login</h1>
+    <form method="POST" action="{{ url_for('login') }}" onsubmit="showLoader()">
         {{ form.hidden_tag() }}
-        <div>
-            {{ form.username.label }}<br>
-            {{ form.username(size=32) }}
+        <div class="form-group">
+            {{ form.username.label }}
+            {{ form.username(size=32, placeholder="Enter your username") }}
         </div>
-        <div>
-            {{ form.password.label }}<br>
-            {{ form.password(size=32) }}
+        <div class="form-group">
+            {{ form.password.label }}
+            {{ form.password(size=32, placeholder="Enter your password") }}
         </div>
-        <div>
-            {{ form.submit() }}
-        </div>
+        <button type="submit">{{ form.submit.label }}</button>
     </form>
-{% endblock %} 
+    <div class="loader" id="loader"></div>
+</div>
+
+<script>
+    function showLoader() {
+        document.getElementById('loader').style.display = 'block';
+    }
+</script>
+{% endblock %}

@@ -1,19 +1,97 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Posts</h1>
+<style>
+    .post-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        padding: 1rem;
+    }
+
+    .post-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+        overflow: hidden;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .post-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .post-preview {
+        padding: 1.5rem;
+    }
+
+    .post-title {
+        color: #2c3e50;
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    .post-excerpt {
+        color: #666;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        margin-bottom: 1rem;
+    }
+
+    .post-meta {
+        font-size: 0.85rem;
+        color: #888;
+        border-top: 1px solid #eee;
+        padding-top: 1rem;
+    }
+
+    .read-more {
+        display: inline-block;
+        color: #e74c3c;
+        text-decoration: none;
+        font-weight: 500;
+        margin-top: 0.5rem;
+    }
+
+    .read-more:hover {
+        text-decoration: underline;
+    }
+
+    .post-number {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: #e74c3c;
+        color: white;
+        padding: 0.3rem 0.8rem;
+        border-radius: 15px;
+        font-size: 0.8rem;
+    }
+</style>
+
+<div class="post-grid">
     {% for post in posts %}
-        <article class="post">
-            <h2>{{ post.title }}</h2>
-            <p>{{ post.content }}</p>
-            <small>Posted on {{ post.date_posted.strftime('%Y-%m-%d') }} by {{ post.author.username }}</small>
-            {% if current_user.is_authenticated and post.author == current_user %}
-                <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST" style="display:inline;">
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-            {% endif %}
-        </article>
+    <div class="post-card" onclick="window.location.href='{{ url_for('view_post', post_id=post.id) }}'">
+        <div class="post-number">#{{ loop.index }}</div>
+        <div class="post-preview">
+            <h2 class="post-title">{{ post.title }}</h2>
+            <div class="post-excerpt">{{ post.content[:200] }}...</div>
+            <div class="post-meta">
+                Posted by {{ post.author.username }} on {{ post.date_posted.strftime('%B %d, %Y') }}
+            </div>
+            <a href="{{ url_for('view_post', post_id=post.id) }}" class="read-more">Read More →</a>
+        </div>
+    </div>
     {% endfor %}
-    {% if current_user.is_authenticated %}
-        <a href="{{ url_for('new_post') }}" class="btn btn-success">New Post</a>
-    {% endif %}
+</div>
+
+{% if current_user.is_authenticated %}
+    <a href="{{ url_for('new_post') }}" class="btn btn-success">✏️ Write New Post</a>
+{% endif %}
 {% endblock %}

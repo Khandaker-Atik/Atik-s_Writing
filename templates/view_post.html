@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .full-post-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .post-header {
+        margin-bottom: 2rem;
+        position: relative;
+    }
+
+    .back-button {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: #f8f9fa;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        color: #2c3e50;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: transform 0.3s ease;
+    }
+
+    .back-button:hover {
+        transform: translateX(-5px);
+    }
+
+    .post-title {
+        text-align: center;
+        color: #2c3e50;
+        font-size: 2.5rem;
+        margin: 2rem 0;
+    }
+
+    .post-content {
+        line-height: 1.8;
+        color: #333;
+        margin-bottom: 2rem;
+    }
+
+    .post-meta {
+        color: #666;
+        text-align: center;
+        padding: 1rem 0;
+        border-top: 1px solid #eee;
+    }
+
+    .post-navigation {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid #eee;
+    }
+
+    .nav-button {
+        padding: 0.5rem 1rem;
+        background: #e74c3c;
+        color: white;
+        text-decoration: none;
+        border-radius: 20px;
+        transition: transform 0.3s ease;
+    }
+
+    .nav-button:hover {
+        transform: translateY(-2px);
+    }
+
+    .post-number {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: #e74c3c;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+    }
+</style>
+
+<div class="full-post-container">
+    <div class="post-header">
+        <a href="{{ url_for('home') }}" class="back-button">← Back to Posts</a>
+        <div class="post-number">Post #{{ post_number }}</div>
+        <h1 class="post-title">{{ post.title }}</h1>
+    </div>
+
+    <div class="post-content">
+        {{ post.content }}
+    </div>
+
+    <div class="post-meta">
+        Posted by {{ post.author.username }} on {{ post.date_posted.strftime('%B %d, %Y') }}
+    </div>
+
+    <div class="post-navigation">
+        {% if prev_post %}
+            <a href="{{ url_for('view_post', post_id=prev_post.id) }}" class="nav-button">← Previous Post</a>
+        {% else %}
+            <span></span>
+        {% endif %}
+
+        {% if next_post %}
+            <a href="{{ url_for('view_post', post_id=next_post.id) }}" class="nav-button">Next Post →</a>
+        {% else %}
+            <span></span>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,18 +1,182 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>New Post</h1>
-    <form method="POST" action="{{ url_for('new_post') }}">
+<style>
+    .post-form-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2.5rem;
+        border-radius: 20px;
+        background: linear-gradient(145deg, #ffffff, #f0f0f0);
+        box-shadow: 20px 20px 60px #d0d0d0,
+                   -20px -20px 60px #ffffff;
+    }
+
+    .gradient-title {
+        font-size: 2.5rem;
+        background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-align: center;
+        margin-bottom: 2rem;
+        position: relative;
+    }
+
+    .gradient-title::after {
+        content: '';
+        display: block;
+        width: 100px;
+        height: 4px;
+        background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+        margin: 10px auto;
+        border-radius: 2px;
+    }
+
+    .form-group {
+        margin-bottom: 2rem;
+        position: relative;
+    }
+
+    .floating-label {
+        position: absolute;
+        top: -25px;
+        left: 0;
+        font-size: 0.9rem;
+        color: #666;
+        transition: all 0.3s ease;
+    }
+
+    input[type="text"],
+    textarea {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid #eee;
+        border-radius: 12px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+    input[type="text"] {
+        height: 50px;
+    }
+
+    textarea {
+        min-height: 250px;
+        resize: vertical;
+        line-height: 1.6;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus {
+        outline: none;
+        border-color: #4ECDC4;
+        box-shadow: 0 0 0 4px rgba(78, 205, 196, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .submit-btn {
+        background: linear-gradient(45deg, #FF6B6B, #FF8B8B);
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 25px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: block;
+        margin: 2rem auto 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .submit-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.1),
+            rgba(255, 255, 255, 0.5),
+            rgba(255, 255, 255, 0.1)
+        );
+        transition: all 0.5s ease;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(255, 107, 107, 0.2);
+    }
+
+    .submit-btn:hover::before {
+        left: 100%;
+    }
+
+    .character-count {
+        position: absolute;
+        bottom: -20px;
+        right: 10px;
+        font-size: 0.8rem;
+        color: #666;
+    }
+
+    /* Custom scrollbar for textarea */
+    textarea::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    textarea::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+
+    textarea::-webkit-scrollbar-thumb {
+        background: #4ECDC4;
+        border-radius: 4px;
+    }
+
+    textarea::-webkit-scrollbar-thumb:hover {
+        background: #FF6B6B;
+    }
+</style>
+
+<div class="post-form-container">
+    <h1 class="gradient-title">Create Your Story</h1>
+    <form method="POST" action="{{ url_for('new_post') }}" id="postForm">
         {{ form.hidden_tag() }}
-        <div>
-            {{ form.title.label }}<br>
-            {{ form.title(size=64) }}
+        <div class="form-group">
+            <span class="floating-label">{{ form.title.label }}</span>
+            {{ form.title(class="form-control", placeholder="Enter an inspiring title...", maxlength="100") }}
+            <div class="character-count" id="titleCount">0/100</div>
         </div>
-        <div>
-            {{ form.content.label }}<br>
-            {{ form.content(rows=10, cols=40) }}
+        <div class="form-group">
+            <span class="floating-label">{{ form.content.label }}</span>
+            {{ form.content(class="form-control", placeholder="Share your thoughts...", maxlength="5000") }}
+            <div class="character-count" id="contentCount">0/5000</div>
         </div>
-        <div>
-            {{ form.submit() }}
-        </div>
+        <button type="submit" class="submit-btn">✨ Publish Post</button>
     </form>
-{% endblock %} 
+</div>
+
+<script>
+    // Character counter for title and content
+    document.getElementById('title').addEventListener('input', function() {
+        document.getElementById('titleCount').textContent = 
+            this.value.length + '/100';
+    });
+
+    document.getElementById('content').addEventListener('input', function() {
+        document.getElementById('contentCount').textContent = 
+            this.value.length + '/5000';
+    });
+
+    // Smooth form submission animation
+    document.getElementById('postForm').addEventListener('submit', function() {
+        document.querySelector('.submit-btn').style.opacity = '0.7';
+    });
+</script>
+{% endblock %}
