@@ -1,35 +1,45 @@
 {% extends "base.html" %}
+
 {% block content %}
 <style>
-    .post-form-container {
+    .notebook-container {
         max-width: 800px;
-        margin: 2rem auto;
-        padding: 2.5rem;
-        border-radius: 20px;
-        background: linear-gradient(145deg, #ffffff, #f0f0f0);
-        box-shadow: 20px 20px 60px #d0d0d0,
-                   -20px -20px 60px #ffffff;
-    }
-
-    .gradient-title {
-        font-size: 2.5rem;
-        background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        text-align: center;
-        margin-bottom: 2rem;
+        margin: 40px auto;
+        background: #fff;
+        padding: 0;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.2);
         position: relative;
+        border-radius: 0 0 5px 5px;
     }
 
-    .gradient-title::after {
+    /* Red margin line on the left */
+    .notebook-container::before {
         content: '';
-        display: block;
-        width: 100px;
-        height: 4px;
-        background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
-        margin: 10px auto;
-        border-radius: 2px;
+        position: absolute;
+        left: 40px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: #ff6b6b;
+    }
+
+    /* Notebook header */
+    .notebook-header {
+        background: #ff6b6b;
+        color: white;
+        padding: 15px 30px;
+        font-family: 'Courier New', monospace;
+        font-size: 24px;
+        text-align: center;
+        border-radius: 5px 5px 0 0;
+    }
+
+    /* Form styling */
+    .notebook-form {
+        padding: 30px 60px;
+        background-image: linear-gradient(#e5e5e5 1px, transparent 1px);
+        background-size: 100% 2rem;
+        line-height: 2rem;
     }
 
     .form-group {
@@ -37,146 +47,124 @@
         position: relative;
     }
 
-    .floating-label {
-        position: absolute;
-        top: -25px;
-        left: 0;
-        font-size: 0.9rem;
-        color: #666;
-        transition: all 0.3s ease;
+    /* Labels styling */
+    .notebook-form label {
+        font-family: 'Courier New', monospace;
+        color: #2c3e50;
+        font-weight: bold;
+        font-size: 18px;
+        margin-bottom: 10px;
+        display: block;
     }
 
-    input[type="text"],
-    textarea {
+    /* Input and textarea styling */
+    .notebook-form input,
+    .notebook-form textarea {
         width: 100%;
-        padding: 15px;
-        border: 2px solid #eee;
-        border-radius: 12px;
-        font-family: 'Poppins', sans-serif;
-        font-size: 1rem;
-        transition: all 0.3s ease;
-        background: white;
+        padding: 10px;
+        border: none;
+        background: transparent;
+        font-family: 'Comic Sans MS', cursive;
+        font-size: 16px;
+        line-height: 2rem;
+        color: #34495e;
+        border-bottom: 2px solid #bdc3c7;
+        transition: border-color 0.3s;
     }
 
-    input[type="text"] {
-        height: 50px;
-    }
-
-    textarea {
-        min-height: 250px;
-        resize: vertical;
-        line-height: 1.6;
-    }
-
-    input[type="text"]:focus,
-    textarea:focus {
+    .notebook-form input:focus,
+    .notebook-form textarea:focus {
         outline: none;
-        border-color: #4ECDC4;
-        box-shadow: 0 0 0 4px rgba(78, 205, 196, 0.1);
+        border-bottom-color: #3498db;
+    }
+
+    /* Button styling */
+    .notebook-btn {
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        font-family: 'Courier New', monospace;
+        font-size: 16px;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: transform 0.2s, background 0.2s;
+        margin-top: 20px;
+    }
+
+    .notebook-btn:hover {
+        background: #2980b9;
         transform: translateY(-2px);
     }
 
-    .submit-btn {
-        background: linear-gradient(45deg, #FF6B6B, #FF8B8B);
+    /* Back button styling */
+    .btn-back {
+        display: inline-block;
+        padding: 10px 20px;
+        background: #95a5a6;
         color: white;
-        border: none;
-        padding: 15px 40px;
+        text-decoration: none;
         border-radius: 25px;
-        font-size: 1.1rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: block;
-        margin: 2rem auto 0;
-        position: relative;
-        overflow: hidden;
+        font-family: 'Courier New', monospace;
+        margin-top: 20px;
+        transition: background 0.2s;
     }
 
-    .submit-btn::before {
-        content: '';
+    .btn-back:hover {
+        background: #7f8c8d;
+        text-decoration: none;
+        color: white;
+    }
+
+    /* Paper clip decoration */
+    .paper-clip {
         position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-            90deg,
-            rgba(255, 255, 255, 0.1),
-            rgba(255, 255, 255, 0.5),
-            rgba(255, 255, 255, 0.1)
-        );
-        transition: all 0.5s ease;
-    }
-
-    .submit-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 20px rgba(255, 107, 107, 0.2);
-    }
-
-    .submit-btn:hover::before {
-        left: 100%;
-    }
-
-    .character-count {
-        position: absolute;
-        bottom: -20px;
-        right: 10px;
-        font-size: 0.8rem;
-        color: #666;
-    }
-
-    /* Custom scrollbar for textarea */
-    textarea::-webkit-scrollbar {
-        width: 8px;
-    }
-
-    textarea::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 4px;
-    }
-
-    textarea::-webkit-scrollbar-thumb {
-        background: #4ECDC4;
-        border-radius: 4px;
-    }
-
-    textarea::-webkit-scrollbar-thumb:hover {
-        background: #FF6B6B;
+        top: -10px;
+        right: 20px;
+        width: 50px;
+        height: 80px;
+        background: #95a5a6;
+        clip-path: path('M 0 20 C 0 10, 10 0, 20 0 L 30 0 C 40 0, 50 10, 50 20 L 50 60 C 50 70, 40 80, 30 80 L 20 80 C 10 80, 0 70, 0 60 Z');
+        transform: rotate(45deg);
     }
 </style>
 
-<div class="post-form-container">
-    <h1 class="gradient-title">Create Your Story</h1>
-    <form method="POST" action="{{ url_for('new_post') }}" id="postForm">
+<div class="notebook-container">
+    <div class="paper-clip"></div>
+    <div class="notebook-header">
+        {% if post %}
+            Edit Entry
+        {% else %}
+            New Entry
+        {% endif %}
+    </div>
+
+    <form action="{{ url_for('edit_post', post_id=post.id) if post else url_for('new_post') }}" method="POST" class="notebook-form">
         {{ form.hidden_tag() }}
+
         <div class="form-group">
-            <span class="floating-label">{{ form.title.label }}</span>
-            {{ form.title(class="form-control", placeholder="Enter an inspiring title...", maxlength="100") }}
-            <div class="character-count" id="titleCount">0/100</div>
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" value="{{ form.title.data }}" required>
         </div>
+
         <div class="form-group">
-            <span class="floating-label">{{ form.content.label }}</span>
-            {{ form.content(class="form-control", placeholder="Share your thoughts...", maxlength="5000") }}
-            <div class="character-count" id="contentCount">0/5000</div>
+            <label for="content">Content</label>
+            <textarea id="content" name="content" rows="8" required>{{ form.content.data }}</textarea>
         </div>
-        <button type="submit" class="submit-btn">✨ Publish Post</button>
+
+        <button type="submit" class="notebook-btn">
+            {% if post %}
+                Save Changes
+            {% else %}
+                Create Entry
+            {% endif %}
+        </button>
     </form>
+
+    {% if post %}
+        <a href="{{ url_for('view_post', post_id=post.id) }}" class="btn-back">Back to Entry</a>
+    {% else %}
+        <a href="{{ url_for('home') }}" class="btn-back">Back to Journal</a>
+    {% endif %}
 </div>
-
-<script>
-    // Character counter for title and content
-    document.getElementById('title').addEventListener('input', function() {
-        document.getElementById('titleCount').textContent = 
-            this.value.length + '/100';
-    });
-
-    document.getElementById('content').addEventListener('input', function() {
-        document.getElementById('contentCount').textContent = 
-            this.value.length + '/5000';
-    });
-
-    // Smooth form submission animation
-    document.getElementById('postForm').addEventListener('submit', function() {
-        document.querySelector('.submit-btn').style.opacity = '0.7';
-    });
-</script>
 {% endblock %}

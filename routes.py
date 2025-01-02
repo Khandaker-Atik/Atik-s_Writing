@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_login import login_user, current_user, logout_user, login_required
 from app import app, db, bcrypt
 from models import User, Post
@@ -82,3 +82,28 @@ def view_post(post_id):
                          prev_post=prev_post, 
                          next_post=next_post,
                          last_edited_time=last_edited_time)
+
+@app.route('/post/edit/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def edit_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    
+    # Check if the current user is the author of the post
+    if post.author != current_user:
+        flash('You do not have permission to edit this post', 'danger')
+        return redirect(url_for('home'))
+    
+    form = PostForm()
+    if form.validate_on_submit():
+        # Update the existing post
+        post.title = form.title.data
+        post.content = form.content.data
+        db.session.commit()
+        flash('Your post has been updated!', 'success')
+        return redirect(url_for('view_post', post_id=post.id))
+    
+    # Pre-populate the form with the current post data
+    form.title.data = post.title
+    form.content.data = post.content
+    
+    return render_template('post.html', form=form, post=post)

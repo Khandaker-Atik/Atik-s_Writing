@@ -7,7 +7,7 @@
         background: white;
         padding: 2rem;
         border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
 
     .post-header {
@@ -84,11 +84,46 @@
         padding: 0.5rem 1rem;
         border-radius: 20px;
     }
+
+    /* Media queries for mobile responsiveness */
+    @media (max-width: 768px) {
+        .full-post-container {
+            padding: 1rem;
+            margin: 1rem;
+        }
+
+        .post-title {
+            font-size: 1.8rem;
+        }
+
+        .post-content {
+            font-size: 1rem;
+        }
+
+        .post-meta {
+            font-size: 0.9rem;
+        }
+
+        .back-button {
+            font-size: 14px;
+            padding: 0.4rem 0.8rem;
+        }
+
+        .nav-button {
+            padding: 0.5rem;
+            font-size: 14px;
+        }
+
+        .post-number {
+            font-size: 14px;
+            padding: 0.4rem 0.8rem;
+        }
+    }
 </style>
 
 <div class="full-post-container">
     <div class="post-header">
-        <a href="{{ url_for('home') }}" class="back-button">← Back to Posts</a>
+        <a href="{{ url_for('home') }}" class="back-button">← Back</a>
         <div class="post-number">Post #{{ post_number }}</div>
         <h1 class="post-title">{{ post.title }}</h1>
     </div>
@@ -116,7 +151,4 @@
     </div>
 </div>
 
-
-
 {% endblock %}
-

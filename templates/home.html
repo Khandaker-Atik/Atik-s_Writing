@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+
 {% block content %}
 
 <head>
@@ -83,14 +84,114 @@
         background-color: #e74c3c;
         color: white;
         border: none;
-        padding: 5px 10px;
+        padding: 8px 15px;
         border-radius: 5px;
         cursor: pointer;
+        font-size: 0.9rem;
         margin-top: 10px;
+        transition: background-color 0.3s;
     }
 
     .btn-delete:hover {
-        background-color: #c0392b;
+        background-color: #4d0058;
+    }
+
+    .btn-edit {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        margin-top: 10px;
+        transition: background-color 0.3s;
+    }
+
+    .btn-edit:hover {
+        background-color: #baff19;
+        color: black;
+    }
+
+    .write-button-container {
+        text-align: center;
+        padding: 2rem 0 4rem;
+    }
+
+    .btn-write {
+        background-color: #2ecc71;
+        color: white;
+        padding: 12px 25px;
+        border-radius: 25px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2);
+    }
+
+    .btn-write:hover {
+        background-color: #fff;
+        color: #2ecc71;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(46, 204, 113, 0.25);
+    }
+
+    /* Updated Footer Styles */
+    .footer {
+        background: linear-gradient(135deg, #f6f7ff 0%, #e9f0ff 100%);
+        padding: 25px 0;
+        text-align: center;
+        margin-top: auto;
+        border-top: 3px solid #eef2ff;
+        box-shadow: 0 -5px 15px rgba(0,0,0,0.03);
+    }
+
+    .footer__container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    .footer__links {
+        margin-bottom: 15px;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(108, 117, 125, 0.1);
+    }
+
+    .footer__link {
+        text-decoration: none;
+        color: #6c8cde;
+        font-size: 1.1rem;
+        margin: 0 10px;
+        display: inline-flex;
+        align-items: center;
+        transition: all 0.3s ease;
+        padding: 8px 20px;
+        border-radius: 20px;
+        background: rgba(108, 140, 222, 0.1);
+    }
+
+    .footer__link:hover {
+        transform: translateY(-2px);
+        color: #4267B2;
+        background: rgba(108, 140, 222, 0.15);
+        box-shadow: 0 4px 12px rgba(108, 140, 222, 0.1);
+    }
+
+    .footer__copy {
+        color: #8391a7;
+        font-size: 0.9rem;
+        margin: 15px 0;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+    }
+
+    .footer__edit-time {
+        color: #a3aed0;
+        font-size: 0.85rem;
+        font-style: italic;
     }
 </style>
 
@@ -106,9 +207,9 @@
             </div>
             {% if current_user.is_authenticated and (current_user.is_admin or post.author == current_user) %}
             <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST" style="display:inline;">
-                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                <button type="submit" class="btn-delete btn-sm">Delete</button>
             </form>
-            <a href="{{ url_for('edit_post', post_id=post.id) }}" class="btn btn-primary btn-sm">Edit</a>
+            <a href="{{ url_for('edit_post', post_id=post.id) }}" class="btn-edit btn-sm" style="text-decoration: none;">Edit</a>
             {% endif %}
         </div>
     </div>
@@ -116,22 +217,23 @@
 </div>
 
 {% if current_user.is_authenticated %}
-    <a href="{{ url_for('new_post') }}" class="btn btn-success" style="text-decoration: none;">✏️ Write New Post</a>
+<div class="write-button-container">
+    <a href="{{ url_for('new_post') }}" class="btn-write">✏️ Write New Post</a>
+</div>
 {% endif %}
 
-<!-- Footer -->
-<footer class="footer" style="background-color: #f8f9fa; padding: 20px 0; text-align: center;">
-    <div class="footer__container" style="max-width: 1200px; margin: 0 auto;">
-        <div class="footer__links" style="margin-bottom: 10px;">
-            <a href="https://www.facebook.com/4t716" target="_blank" class="footer__link" 
-               style="text-decoration: none; color: #4267B2; font-size: 1.2rem; margin: 0 10px; display: inline-flex; align-items: center;">
-                <i class="uil uil-facebook-f" style="margin-right: 8px; font-size: 1.5rem;"></i> Khandaker Atik
+<footer class="footer">
+    <div class="footer__container">
+        <div class="footer__links">
+            <a href="https://www.facebook.com/4t716" target="_blank" class="footer__link">
+                <i class="uil uil-facebook-f" style="margin-right: 8px;"></i>
+                <span>Khandaker Atik</span>
             </a>
         </div>
-        <p class="footer__copy" style="color: #6c757d; font-size: 0.9rem;">
+        <p class="footer__copy">
             &#169; 2025 Developed By Khandaker Atik. All Rights Reserved.
         </p>
-        <p class="footer__edit-time" style="color: #6c757d; font-size: 0.8rem;">
+        <p class="footer__edit-time">
             Last Edited: {{ last_edited_time }}
         </p>
     </div>

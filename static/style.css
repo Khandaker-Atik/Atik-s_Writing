@@ -25,6 +25,10 @@ nav a {
     font-weight: bold;
 }
 
+nav a:hover {
+    color: #e74c3c;  /* Change color to red on hover */
+}
+
 .container {
     padding: 5rem 2rem 2rem 2rem;
     max-width: 800px;
@@ -79,4 +83,95 @@ nav a {
 
 .btn-danger:hover, .btn-success:hover {
     opacity: 0.8;
+}
+
+/* Add media query for responsiveness */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;  /* Adjust font size for small screens */
+    }
+
+    nav {
+        font-size: 14px;  /* Smaller font for navigation on mobile */
+        padding: 0.8rem;
+    }
+
+    .container {
+        padding: 3rem 1rem;  /* Reduce padding on small screens */
+    }
+
+    .post {
+        padding: 1rem 0.5rem;  /* Reduce padding for posts */
+    }
+
+    .post-title {
+        font-size: 1.8rem;  /* Adjust font size of the title for small screens */
+    }
+
+    .post-content {
+        font-size: 1rem;  /* Adjust content font size */
+    }
+
+    .post-meta {
+        font-size: 0.9rem;  /* Smaller font size for post metadata */
+    }
+
+    .back-button {
+        font-size: 14px;  /* Smaller font size for back button */
+        padding: 0.4rem 0.8rem;
+    }
+
+    .nav-button {
+        padding: 0.5rem 1rem;  /* Adjust padding for nav buttons */
+    }
+
+    .post-number {
+        font-size: 14px;  /* Adjust font size of post number */
+    }
+}
+
+/* Enable smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Edit Post Form */
+form {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+form .form-group {
+    margin-bottom: 15px;
+}
+
+form label {
+    font-size: 16px;
+    color: #333;
+}
+
+form input,
+form textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+form button {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #2980b9;
 }
