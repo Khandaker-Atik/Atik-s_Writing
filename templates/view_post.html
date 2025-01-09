@@ -129,9 +129,9 @@
     </div>
 
     <div class="post-content">
-        {{ post.content }}
+        {{ post.content | safe }}
     </div>
-
+    
     <div class="post-meta">
         Posted by {{ post.author.username }} on {{ post.date_posted.strftime('%B %d, %Y') }}
     </div>

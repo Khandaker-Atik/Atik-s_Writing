@@ -144,14 +144,14 @@
 
         <div class="form-group">
             <label for="title">Title</label>
-            <input type="text" id="title" name="title" value="{{ form.title.data }}" required>
+            <input type="text" id="title" name="title" value="{{ form.title.data if post else '' }}" required>
         </div>
-
+        
         <div class="form-group">
             <label for="content">Content</label>
-            <textarea id="content" name="content" rows="8" required>{{ form.content.data }}</textarea>
+            <textarea id="content" name="content" rows="8" required>{{ form.content.data if post else '' }}</textarea>
         </div>
-
+                
         <button type="submit" class="notebook-btn">
             {% if post %}
                 Save Changes

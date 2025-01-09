@@ -201,7 +201,7 @@
         <div class="post-number">#{{ loop.index }}</div>
         <div class="post-preview">
             <h2 class="post-title">{{ post.title }}</h2>
-            <div class="post-excerpt">{{ post.content[:200] }}...</div>
+            <div class="post-excerpt">{{ post.content[:200] | safe }}...</div>
             <div class="post-meta">
                 Posted by {{ post.author.username }} on {{ post.date_posted.strftime('%B %d, %Y') }}
             </div>

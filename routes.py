@@ -37,7 +37,9 @@ def logout():
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data, content=form.content.data, author=current_user)
+        # Replace newlines with <br> tags before saving
+        content = form.content.data.replace('\n', '<br>')
+        post = Post(title=form.title.data, content=content, author=current_user)
         db.session.add(post)
         db.session.commit()
         flash('Your post has been created!', 'success')
@@ -95,9 +97,9 @@ def edit_post(post_id):
     
     form = PostForm()
     if form.validate_on_submit():
-        # Update the existing post
+        # Update the existing post, replacing newlines with <br> tags
         post.title = form.title.data
-        post.content = form.content.data
+        post.content = form.content.data.replace('\n', '<br>')
         db.session.commit()
         flash('Your post has been updated!', 'success')
         return redirect(url_for('view_post', post_id=post.id))
